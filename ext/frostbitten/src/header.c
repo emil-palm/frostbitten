@@ -140,10 +140,35 @@ VALUE frostbitten_header_allocate (VALUE klass) {
 	return Data_Wrap_Struct(klass,NULL,frostbitten_header_deallocate, header);
 }
 
+VALUE frostbitten_header_init(int argc, VALUE *argv, VALUE self) {
+
+	fb_header *header;
+	Data_Get_Struct(self, fb_header, header);
+
+ 	VALUE options;
+    if (rb_scan_args(argc, argv, "01", &options) == 0)
+        options = Qnil;
+
+    VALUE sequence = INT2NUM(0);
+    VALUE origin = ID2SYM(rb_intern("client"));
+    VALUE response = Qfalse;
+
+	if (!NIL_P(options) && TYPE(options) == T_HASH) {
+		sequence = OVERRIDE_IF_SET(options,sequence);
+		origin = OVERRIDE_IF_SET(options,origin);	
+		response = OVERRIDE_IF_SET(options,response);		
+	}
+	frostbitten_header_set_sequence(self,sequence);
+	frostbitten_header_set_origin(self,origin);
+	frostbitten_header_set_response(self,response);
+		
+	return self;
+}
 
 void header_init() {
 	c_frostbitten_header = rb_define_class_under(m_frostbitten, "Header", rb_cObject);
 	rb_define_alloc_func(c_frostbitten_header, frostbitten_header_allocate);
+	rb_define_method(c_frostbitten_header, "initialize", frostbitten_header_init, -1);
 
     rb_define_method(c_frostbitten_header,"sequence=", frostbitten_header_set_sequence,1);
     rb_define_method(c_frostbitten_header,"sequence", frostbitten_header_get_sequence,0);

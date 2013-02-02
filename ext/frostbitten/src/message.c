@@ -2,7 +2,6 @@
 #include "message.h"
 VALUE c_frostbitten_message;
 
-char** frostbitten_message_generate(fb_message *message, uint32_t *message_size);
 
 VALUE frostbitten_message_read_from_io(VALUE self, VALUE io) {
 	fb_message *message;
@@ -17,7 +16,7 @@ VALUE frostbitten_message_read_from_io(VALUE self, VALUE io) {
 	uint32_t packetSize, wordCount = 0;
 
 	FILE *fp = rb_io_stdio_file(fptr);
-	
+
 	fread((void*)&packetSize, sizeof(uint32_t),1, fp);
 	fread((void*)&wordCount, sizeof(uint32_t),1, fp);
 
@@ -115,12 +114,25 @@ VALUE frostbitten_message_set_header(VALUE self, VALUE header) {
 	return message->header;
 }
 
-VALUE frostbitten_message_init(VALUE self) {
+VALUE frostbitten_message_init(int argc, VALUE *argv, VALUE self) {
 
 	fb_message *message;
 	Data_Get_Struct(self, fb_message, message);
-	message->words = rb_ary_new();
-	message->header = rb_obj_alloc(c_frostbitten_header);
+
+ 	VALUE options;
+    if (rb_scan_args(argc, argv, "01", &options) == 0)
+        options = Qnil;
+    VALUE words = rb_ary_new();
+	VALUE header = rb_obj_alloc(c_frostbitten_header);
+
+	if (!NIL_P(options) && TYPE(options) == T_HASH) {
+		words = OVERRIDE_IF_SET(options,words);
+		header = OVERRIDE_IF_SET(options,header);
+	}
+
+	frostbitten_message_set_header(self,header);
+	frostbitten_message_set_words(self,words);
+		
 	return self;
 }
 
@@ -143,7 +155,7 @@ VALUE frostbitten_message_allocate (VALUE klass) {
 void message_init() {
 	c_frostbitten_message = rb_define_class_under(m_frostbitten, "Message", rb_cObject);
 	rb_define_alloc_func(c_frostbitten_message, frostbitten_message_allocate);
-	rb_define_method(c_frostbitten_message, "initialize", frostbitten_message_init, 0);
+	rb_define_method(c_frostbitten_message, "initialize", frostbitten_message_init, -1);
 
 	rb_define_method(c_frostbitten_message, "write", frostbitten_message_write_to_io, 1);
 	rb_define_method(c_frostbitten_message, "read", frostbitten_message_read_from_io, 1);

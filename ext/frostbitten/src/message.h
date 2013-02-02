@@ -13,4 +13,5 @@ typedef struct _fb_message {
 } fb_message;
 void frostbitten_message_deallocate(fb_message *message);
 VALUE frostbitten_message_allocate (VALUE klass);
+char** frostbitten_message_generate(fb_message *message, uint32_t *message_size);
 #endif
