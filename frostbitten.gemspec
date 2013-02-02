@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "frostbitten"
-  s.version = "0.0.2.pre1"
+  s.version = "0.0.1.pre1"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emil Palm"]
@@ -35,10 +35,10 @@ Gem::Specification.new do |s|
     "ext/frostbitten/header.h",
     "ext/frostbitten/message.c",
     "ext/frostbitten/message.h",
+    "ext/frostbitten/native.c",
     "ext/frostbitten/word.c",
     "ext/frostbitten/word.h",
     "frostbitten.gemspec",
-    "lib/frostbitten.bundle",
     "lib/frostbitten.rb",
     "lib/frostbitten/client.rb",
     "lib/frostbitten/server.rb",
