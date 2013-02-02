@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "frostbitten"
-  s.version = "0.0.0.pre1"
+  s.version = "0.0.1.pre1"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emil Palm"]
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
     ".document",
     "Gemfile",
     "Gemfile.lock",
+    "Guardfile",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
@@ -29,19 +30,23 @@ Gem::Specification.new do |s|
     "ext/frostbitten/.DS_Store",
     "ext/frostbitten/Makefile",
     "ext/frostbitten/extconf.rb",
-    "ext/frostbitten/src/frostbitten.c",
-    "ext/frostbitten/src/frostbitten.h",
-    "ext/frostbitten/src/header.c",
-    "ext/frostbitten/src/header.h",
-    "ext/frostbitten/src/message.c",
-    "ext/frostbitten/src/message.h",
-    "ext/frostbitten/src/word.c",
-    "ext/frostbitten/src/word.h",
+    "ext/frostbitten/frostbitten.c",
+    "ext/frostbitten/frostbitten.h",
+    "ext/frostbitten/header.c",
+    "ext/frostbitten/header.h",
+    "ext/frostbitten/message.c",
+    "ext/frostbitten/message.h",
+    "ext/frostbitten/word.c",
+    "ext/frostbitten/word.h",
     "frostbitten.gemspec",
+    "lib/frostbitten.bundle",
     "lib/frostbitten.rb",
+    "lib/frostbitten/client.rb",
     "lib/frostbitten/server.rb",
     "lib/frostbitten/version.rb",
     "spec/frostbitten_spec.rb",
+    "spec/lib/frostbitten_client_spec.rb",
+    "spec/lib/frostbitten_server_spec.rb",
     "spec/spec_helper.rb",
     "test/helper.rb",
     "test/test_frostbitten.rb"
