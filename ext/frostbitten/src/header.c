@@ -16,17 +16,32 @@ VALUE frostbitten_header_set_sequence(VALUE self, VALUE seq) {
 	return frostbitten_header_get_sequence(self);
 }
 
-VALUE frostbitten_header_get_clientOrigin(VALUE self) {
+VALUE frostbitten_header_set_origin(VALUE self, VALUE origin) {
 	fb_header *header;
 	Data_Get_Struct(self, fb_header, header);
-	return INT2NUM(header->clientOrigin);
+	if ( ID2SYM(rb_intern("client")) == origin ) {
+		header->origin = 1;
+	} else if ID2SYM(rb_intern("server") == origin ) {
+		header->origin = 0;
+	} else {
+		rb_raise(rb_eTypeError, "origin must be either :client or :server");
+	}
+	return Qfalse;
 }
 
-VALUE frostbitten_header_set_clientOrigin(VALUE self, VALUE clientOrigin) {
+VALUE frostbitten_header_get_origin(VALUE self) {
 	fb_header *header;
 	Data_Get_Struct(self, fb_header, header);
-	header->clientOrigin = NUM2INT(clientOrigin);
-	return frostbitten_header_get_clientOrigin(self);
+	switch(header->origin) {
+		case 1:
+			return ID2SYM(rb_intern("client"));
+			break;
+
+		case 0:
+			return ID2SYM(rb_intern("server"));
+			break;
+	}
+	return Qnil;
 }
 
 VALUE frostbitten_header_get_response(VALUE self) {
@@ -44,9 +59,10 @@ VALUE frostbitten_header_set_response(VALUE self, VALUE response) {
 
 uint32_t frostbitten_header_package(fb_header *header) {
 	uint32_t data = header->sequence;
-
-	if ( header->clientOrigin != (( 1 << 31 ) & data) ) {
-		data ^= 1 << 31;
+	if ( header->origin == 0 ) {
+		data |= 1 << 31;
+	} else { 
+		data &= ~(1 << 31);
 	}
 
 	if ( header->response != (( 1 << 30 ) & data) ) {
@@ -58,8 +74,8 @@ uint32_t frostbitten_header_package(fb_header *header) {
 
 void frostbitten_header_unpack(fb_header *header, uint32_t val) {
 	header->sequence = (uint32_t)val & 0x3fffffff;
-	header->clientOrigin = (val & (1 << 30));
-	header->response = (val & (1 << 31));
+	header->origin = (val & (1 << 31));
+	header->response = (val & (1 << 30));
 }
 
 VALUE frostbitten_header_write_to_io(VALUE self, VALUE io) {
@@ -100,26 +116,9 @@ VALUE frostbitten_header_read_from_io(VALUE self, VALUE io) {
     return self;
 }
 
-VALUE frostbitten_header_format(VALUE self) {
-
-	fb_header *header;
-	Data_Get_Struct(self, fb_header, header);
-	uint32_t data = header->sequence;
-
-	if ( header->clientOrigin != (( 1 << 30 ) & data) ) {
-		data ^= 1 << 30;
-	}
-
-	if ( header->response != (( 1 << 31 ) & data) ) {
-		data ^= 1 << 31;
-	}
-
-	return INT2NUM(data);
-}
-
 void frostbitten_header_deallocate(fb_header *header) {
 	header->sequence = 0;
-	header->clientOrigin = false;
+	header->origin = 0;
 	header->response = false;
 	ruby_xfree(header);
 }
@@ -137,8 +136,8 @@ void header_init() {
     rb_define_method(c_frostbitten_header,"sequence=", frostbitten_header_set_sequence,1);
     rb_define_method(c_frostbitten_header,"sequence", frostbitten_header_get_sequence,0);
     
-    rb_define_method(c_frostbitten_header,"is_client_origin=", frostbitten_header_set_clientOrigin, 1);
-    rb_define_method(c_frostbitten_header,"is_client_origin?", frostbitten_header_get_clientOrigin, 0);
+    rb_define_method(c_frostbitten_header, "origin", frostbitten_header_get_origin,0);
+    rb_define_method(c_frostbitten_header, "origin=", frostbitten_header_set_origin, 1);
 
 	rb_define_method(c_frostbitten_header,"response=", frostbitten_header_set_response, 1);
     rb_define_method(c_frostbitten_header,"is_response", frostbitten_header_get_response, 0);

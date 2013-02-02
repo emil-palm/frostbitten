@@ -99,7 +99,6 @@ VALUE frostbitten_message_set_words(VALUE self, VALUE words) {
 
 	fb_message *message;
 	Data_Get_Struct(self, fb_message, message);
-	rb_gc_mark(message->words);
 	message->words = words;
 	return message->words;
 }
