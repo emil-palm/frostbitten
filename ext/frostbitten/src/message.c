@@ -17,14 +17,9 @@ VALUE frostbitten_message_read_from_io(VALUE self, VALUE io) {
 	uint32_t packetSize, wordCount = 0;
 
 	FILE *fp = rb_io_stdio_file(fptr);
-
-	fpos_t pos;
 	
-
 	fread((void*)&packetSize, sizeof(uint32_t),1, fp);
 	fread((void*)&wordCount, sizeof(uint32_t),1, fp);
-
-
 
 	uint32_t bufferSize = packetSize-12; // Remove the byte size of header, packetSize and wordCount
 	

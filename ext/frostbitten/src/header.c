@@ -24,7 +24,7 @@ VALUE frostbitten_header_set_origin(VALUE self, VALUE origin) {
 	} else if ID2SYM(rb_intern("server") == origin ) {
 		header->origin = 0;
 	} else {
-		rb_raise(rb_eTypeError, "origin must be either :client or :server");
+		rb_raise(rb_eTypeError, "must be either :client or :server");
 	}
 	return Qfalse;
 }
@@ -47,13 +47,25 @@ VALUE frostbitten_header_get_origin(VALUE self) {
 VALUE frostbitten_header_get_response(VALUE self) {
 	fb_header *header;
 	Data_Get_Struct(self, fb_header, header);
-	return INT2NUM(header->response);
+	if ( header->response == 0 ) {
+		return Qtrue;
+	} else {
+		return Qfalse;
+	}
 }
 
 VALUE frostbitten_header_set_response(VALUE self, VALUE response) {
+	if ( TYPE(response) != T_TRUE && TYPE(response) != T_FALSE) {
+		rb_raise(rb_eTypeError, "must be either true or false");
+	}
+
 	fb_header *header;
 	Data_Get_Struct(self, fb_header, header);
-	header->response = NUM2INT(response);
+	if ( response == Qtrue ) 
+		header->response = 1;
+	else {
+		header->response = 0;
+	}
 	return frostbitten_header_get_response(self);
 }
 
@@ -140,7 +152,7 @@ void header_init() {
     rb_define_method(c_frostbitten_header, "origin=", frostbitten_header_set_origin, 1);
 
 	rb_define_method(c_frostbitten_header,"response=", frostbitten_header_set_response, 1);
-    rb_define_method(c_frostbitten_header,"is_response", frostbitten_header_get_response, 0);
+    rb_define_method(c_frostbitten_header,"is_response?", frostbitten_header_get_response, 0);
 
     rb_define_method(c_frostbitten_header, "read", frostbitten_header_read_from_io, 1);
     rb_define_method(c_frostbitten_header, "write", frostbitten_header_write_to_io, 1);
