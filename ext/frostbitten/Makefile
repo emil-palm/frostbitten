@@ -64,7 +64,7 @@ COUTFLAG = -o
 
 RUBY_EXTCONF_H = 
 cflags   =  $(optflags) $(debugflags) $(warnflags)
-optflags = -O3
+optflags = -O0
 debugflags = -g3
 warnflags = -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wshorten-64-to-32 -Wimplicit-function-declaration
 CFLAGS   = -fno-common $(cflags)  -fno-common -pipe $(ARCH_FLAG)

@@ -8,10 +8,8 @@ void message_init();
 extern VALUE c_frostbitten_message;
 // Frostbitten::Message
 typedef struct _fb_message {
-	fb_header *header;
-	uint32_t packetSize;
-	uint32_t wordCount;
-	fb_word *words[];
+	VALUE header; // Frostbitten::Header
+	VALUE words; // Array
 } fb_message;
 void frostbitten_message_deallocate(fb_message *message);
 VALUE frostbitten_message_allocate (VALUE klass);
