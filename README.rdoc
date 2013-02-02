@@ -1,6 +1,16 @@
 = frostbitten
 
-Description goes here.
+Gem that provides RCON commands for frostbite 2 engine games. BF3, BFBC2 and so on
+
+== Example usage
+require 'rubygems'
+require 'frostbitten'
+
+client = Frostbitten::Client.new("fbrcon://yourserver:yourport")
+client.send "serverinfo"
+
+== Method == 
+No explcit methods are implemented yet. but give feedback in the issues and lets do it.
 
 == Contributing to frostbitten
  
@@ -16,4 +26,3 @@ Description goes here.
 
 Copyright (c) 2013 Emil Palm. See LICENSE.txt for
 further details.
-
