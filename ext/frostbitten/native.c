@@ -7,7 +7,7 @@
 
 VALUE m_frostbitten;
 // // The initialization method for this module
-void Init_frostbitten() {
+void Init_native() {
 	m_frostbitten = rb_define_module("Frostbitten");
 	header_init();
  	message_init();

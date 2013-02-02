@@ -35,7 +35,10 @@ RSpec::Core::RakeTask.new('spec')
 task :default => :spec
 
 require 'rake/extensiontask'
-Rake::ExtensionTask.new('frostbitten', t.jeweler.gemspec)
+Rake::ExtensionTask.new('native', t.jeweler.gemspec) do |r|
+  r.lib_dir = 'lib/frostbitten'
+  r.ext_dir = 'ext/frostbitten'
+end
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
