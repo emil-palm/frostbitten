@@ -9,7 +9,7 @@ require 'frostbitten'
 client = Frostbitten::Client.new("fbrcon://yourserver:yourport")
 client.send "serverinfo"
 
-== Method == 
+== Method
 No explcit methods are implemented yet. but give feedback in the issues and lets do it.
 
 == Contributing to frostbitten
