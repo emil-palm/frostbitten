@@ -11,7 +11,7 @@ doc
 
 # bundler
 .bundle
-
+ext/**/*.o
 # jeweler generated
 pkg
 
@@ -28,7 +28,7 @@ pkg
 #
 # For MacOS:
 #
-#.DS_Store
+.DS_Store
 
 # For TextMate
 #*.tmproj

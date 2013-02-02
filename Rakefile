@@ -10,6 +10,7 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'rake'
+require './lib/frostbitten/version'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
@@ -21,6 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Gem that provides RCON commands for frostbite 2 engine games. BF3, BFBC2 and so on}
   gem.email = "emil.palm@x86.nu"
   gem.authors = ["Emil Palm"]
+  gem.version = Frostbitten::Version::STRING
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
