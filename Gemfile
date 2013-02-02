@@ -11,4 +11,8 @@ group :development do
   gem "bundler"
   gem "jeweler", "~> 1.8.4"
   gem 'rspec'
+  gem 'rb-fsevent', :require => false if RUBY_PLATFORM =~ /darwin/i  
+  gem 'guard-rspec'
+  gem 'terminal-notifier-guard'
+  gem 'rake-compiler'
 end

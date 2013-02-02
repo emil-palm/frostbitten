@@ -5,9 +5,9 @@
 
 Gem::Specification.new do |s|
   s.name = "frostbitten"
-  s.version = "0.0.0"
+  s.version = "0.0.0.pre1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emil Palm"]
   s.date = "2013-02-02"
   s.description = "Gem that provides RCON commands for frostbite 2 engine games. BF3, BFBC2 and so on"
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
@@ -36,8 +37,11 @@ Gem::Specification.new do |s|
     "ext/frostbitten/src/message.h",
     "ext/frostbitten/src/word.c",
     "ext/frostbitten/src/word.h",
+    "frostbitten.gemspec",
     "lib/frostbitten.rb",
-    "spec/frostbitten_server_spec.rb",
+    "lib/frostbitten/server.rb",
+    "lib/frostbitten/version.rb",
+    "spec/frostbitten_spec.rb",
     "spec/spec_helper.rb",
     "test/helper.rb",
     "test/test_frostbitten.rb"
@@ -57,12 +61,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<rb-fsevent>, [">= 0"])
+      s.add_development_dependency(%q<guard-rspec>, [">= 0"])
+      s.add_development_dependency(%q<terminal-notifier-guard>, [">= 0"])
+      s.add_development_dependency(%q<rake-compiler>, [">= 0"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<rb-fsevent>, [">= 0"])
+      s.add_dependency(%q<guard-rspec>, [">= 0"])
+      s.add_dependency(%q<terminal-notifier-guard>, [">= 0"])
+      s.add_dependency(%q<rake-compiler>, [">= 0"])
     end
   else
     s.add_dependency(%q<shoulda>, [">= 0"])
@@ -70,6 +82,10 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<rb-fsevent>, [">= 0"])
+    s.add_dependency(%q<guard-rspec>, [">= 0"])
+    s.add_dependency(%q<terminal-notifier-guard>, [">= 0"])
+    s.add_dependency(%q<rake-compiler>, [">= 0"])
   end
 end
 

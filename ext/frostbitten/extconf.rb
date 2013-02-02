@@ -1,2 +1,4 @@
 require 'mkmf'
-create_makefile('frostbitten/frostbitten','src/')
+extension_name = 'frostbitten'
+dir_config(extension_name)
+create_makefile(extension_name)

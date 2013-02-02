@@ -13,7 +13,7 @@ require 'rake'
 require './lib/frostbitten/version'
 
 require 'jeweler'
-Jeweler::Tasks.new do |gem|
+t = Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "frostbitten"
   gem.homepage = "http://github.com/mrevilme/frostbitten"
@@ -23,14 +23,19 @@ Jeweler::Tasks.new do |gem|
   gem.email = "emil.palm@x86.nu"
   gem.authors = ["Emil Palm"]
   gem.version = Frostbitten::Version::STRING
+  gem.extensions = FileList['ext/**/extconf.rb']
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core/rake_task'
+
 RSpec::Core::RakeTask.new('spec')
 
 task :default => :spec
+
+require 'rake/extensiontask'
+Rake::ExtensionTask.new('frostbitten', t.jeweler.gemspec)
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
