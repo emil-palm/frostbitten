@@ -12,6 +12,15 @@ Gem that provides RCON commands for frostbite 2 engine games. BF3, BFBC2 and so 
    "2", "2", "350", "350", "0", "", "true", "true", "false", "427121", "246028", "188.126.64.19:25270", 
    "v1.863 | A1386 C2.317", "true", "EU", "ams", "SE", "true"] 
 
+=== Another usage
+  require 'rubygems'
+  require 'frostbitten'
+  Frostbitten::setup("fbrcon://yourserver:yourport")
+  Frostbitten::players
+   => [#<Frostbitten::Player deaths="0" guid="" kills="9" name="-I-Kaktus-I-" score="2291" squad_id="32" 
+   team_id="1">, #<Frostbitten::Player deaths="1" guid="" kills="0" name="Umalswe" score="210" squad_id="3"
+    team_id="1">]
+
 == Method
 No explcit methods are implemented yet. but give feedback in the issues and lets do it.
 
