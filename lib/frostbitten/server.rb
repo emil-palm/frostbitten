@@ -19,6 +19,10 @@ module Frostbitten
 		attr_accessor :hostname, :port, :password
 		attr_reader :sock, :sequence, :timeout
 
+		# Initialize class with URI 'fbrcon://password@ip:port'
+		# Also accept options
+		# { :keepalive = true/false, :socket_timeout => 1 }
+
 		def initialize(uri, options={})
 			server_parsed = URI.parse(uri)
 			self.hostname = server_parsed.host
@@ -31,11 +35,13 @@ module Frostbitten
 			@options = DEFAULTS.merge(options)
 		end
 
+		# Returns if the socket is alive of closed
 		def alive?
 			return true if @sock
 			return false
 		end
 
+		# Connects socket
 		def connect
 			return if alive?
 			@sock = TCPSocket.open(self.hostname, self.port);
@@ -52,12 +58,19 @@ module Frostbitten
       		end
 		end
 
+		# Close socket
 		def close
 			return unless alive?
 			@sock.close
 			@sock = nil
 		end
 
+
+		# Accepts a Frostbitten::Mesage and sends it over socket
+		# updates message.header.sequence with a incremented version
+		# of server sequence counter.
+		# can raise NameError, ArgumentError or StandardError based on return data
+		# from server.
 		def send(message) 
 			connect unless self.alive?
 			unless message.header.is_response?
@@ -75,17 +88,13 @@ module Frostbitten
 				 	if word == "UnknownCommand"
 				 		raise NameError, "UnknownCommand raised by server"
 				 	elsif word == "InvalidArguments"
-				 		raise ArgumentEror, "InvalidArguments raised by server"
+				 		raise ArgumentError, "InvalidArguments raised by server"
 				 	else
 				 		raise StandardError, "Server returned #{word}"
 				 	end
 				 end
 			end
 			return m
-		end
-
-		def auth
-
 		end
 	end
 end

@@ -16,3 +16,5 @@ group :development do
   gem 'terminal-notifier-guard'
   gem 'rake-compiler'
 end
+
+gem 'hashie'
