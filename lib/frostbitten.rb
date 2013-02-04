@@ -1,6 +1,6 @@
 require 'frostbitten/native'
 require 'frostbitten/version'
-require 'frostbitten/server'
+require 'frostbitten/connection'
 require 'frostbitten/client'
 require 'frostbitten/player'
 

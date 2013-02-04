@@ -8,7 +8,7 @@ module URI
 end
 
 module Frostbitten
-	class Server
+	class Connection
 		DEFAULTS = {
 			# connect/read/write timeout for socket operations
 			:socket_timeout => 0.5,

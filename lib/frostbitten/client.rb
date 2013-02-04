@@ -13,15 +13,15 @@ require 'frostbitten/methods/normal'
 module Frostbitten
 	class Client
 		# Access to the server object.
-		attr_accessor :server
+		attr_accessor :connection
 
 		# Initialize class with URI 'fbrcon://password@ip:port'
 		# Also accept options
 		# { :keepalive = true/false, :socket_timeout => 1 }
-		# will setup server object.
+		# will setup connection object.
 		def initialize(uri=nil, options={})
 			if uri
-				self.server = Frostbitten::Server.new(uri,options)
+				self.connection = Frostbitten::Connection.new(uri,options)
 			end
 		end
 
@@ -30,7 +30,7 @@ module Frostbitten
 		# Accepts either a string or a array of strings to send.
 		# Returns a list of words returned by server.
 		def send(commands)
-			return unless self.server
+			return unless self.connection
 
 			if commands.is_a? String
 				commands = [commands]
@@ -38,7 +38,7 @@ module Frostbitten
 
 			header = Frostbitten::Header.new(:origin => :client, :response => false)
 			msg = Frostbitten::Message.new(:words => commands, :header => header)
-			message = server.send(msg)
+			message = connection.send(msg)
 			return message.words[1..-1]
 		end
 
