@@ -1,3 +1,4 @@
+require 'pp'
 module Frostbitten
 	module Methods
 		# Methods not requiring admin rcon priveleges
@@ -23,7 +24,7 @@ module Frostbitten
 			end
 
 			# Lists players and will return list of players
-			def players(list="all") #:yield player
+			def players(list="all")
 				data = send(['listPlayers', list])
 				if data
 					cols = data.shift.to_i
@@ -41,6 +42,34 @@ module Frostbitten
 						end
 					end
 				end
+			end
+
+			# General server information
+			def serverinfo
+				hash = {}
+				scoreentries = 0
+				scores = []
+				score = []
+				score_data = send("serverinfo")
+				score_data.each_with_index do |value,index|
+					if index == 7
+						scoreentries = value.to_i
+					elsif (8..(7+scoreentries)).include? index
+						score << value
+						if (index-7) % scoreentries == 0
+							scores << score
+							score = []
+						end
+					else
+						key = index + 1
+						if scoreentries > 0 
+							key = key - scoreentries
+						end
+						hash["data#{key}"] = value
+					end
+					hash["data8"] = scores
+				end
+				return Server.new(hash)
 			end
 		end
 	end

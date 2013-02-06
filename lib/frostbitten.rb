@@ -3,6 +3,7 @@ require 'frostbitten/version'
 require 'frostbitten/connection'
 require 'frostbitten/client'
 require 'frostbitten/player'
+require 'frostbitten/server'
 
 # Author::    Emil Palm  (mailto:emil@x86.nu)
 # Copyright:: Copyright (c) 2013 Emil Palm
