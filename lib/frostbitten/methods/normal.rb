@@ -46,12 +46,13 @@ module Frostbitten
 
 			# General server information
 			def serverinfo
-				hash = {}
 				score_data = send("serverinfo")
-				x = Frostbitten::Score.scores_from_list(score_data,7)
-				score_data.insert(7,x)
-				score_data.to_enum.with_index(1).each { |value,key| hash["data#{key}"] = value }
-				return Server.new(hash)
+				score_data.insert(7,Frostbitten::Score.scores_from_list(score_data,7))
+				return Server.new {}.tap do |hash| 
+					score_data.to_enum.with_index(1).each do |value,key| 
+						hash["data#{key}"] = value
+					end
+				end
 			end
 		end
 	end

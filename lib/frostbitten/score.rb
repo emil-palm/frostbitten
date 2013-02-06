@@ -14,8 +14,8 @@ module Frostbitten
 		end
 
 		def initialize(scores)
-			self.team_one = scores[0]
-			self.team_two = scores[1]
+			self.team_one = scores[0].to_i
+			self.team_two = scores[1].to_i
 		end
 	end
 end
