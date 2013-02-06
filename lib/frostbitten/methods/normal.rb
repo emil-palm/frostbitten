@@ -47,28 +47,10 @@ module Frostbitten
 			# General server information
 			def serverinfo
 				hash = {}
-				scoreentries = 0
-				scores = []
-				score = []
 				score_data = send("serverinfo")
-				score_data.each_with_index do |value,index|
-					if index == 7
-						scoreentries = value.to_i
-					elsif (8..(7+scoreentries)).include? index
-						score << value
-						if (index-7) % scoreentries == 0
-							scores << score
-							score = []
-						end
-					else
-						key = index + 1
-						if scoreentries > 0 
-							key = key - scoreentries
-						end
-						hash["data#{key}"] = value
-					end
-					hash["data8"] = scores
-				end
+				x = Frostbitten::Score.scores_from_list(score_data,7)
+				score_data.insert(7,x)
+				score_data.to_enum.with_index(1).each { |value,key| hash["data#{key}"] = value }
 				return Server.new(hash)
 			end
 		end
