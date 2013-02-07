@@ -22,7 +22,12 @@ Gem that provides RCON commands for frostbite 2 engine games. BF3, BFBC2 and so 
     team_id="1">]
 
 == Method
-No explcit methods are implemented yet. but give feedback in the issues and lets do it.
+Implemented methods:
+  * serverinfo
+  * listPlayers
+  * mapList.list
+
+More to come
 
 == Contributing to frostbitten
  
