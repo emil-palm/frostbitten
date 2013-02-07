@@ -12,9 +12,11 @@ module Frostbitten
 				password = password ? password : self.server.password
 
 				data = send("login.hashed")
-				salt = [data.last].pack("H*")
+
+				salt = [data.first].pack("H*")
+				pp salt
 				hashed = Digest::MD5.hexdigest("#{salt}#{password}")
-				if send(["login.hashed", hashed])
+				if send(["login.hashed", hashed.upcase])
 					@logged_in = true
 				else
 					@logged_in = false
@@ -28,20 +30,6 @@ module Frostbitten
 				data = send(['listPlayers', list])
 				if data
 					return Player.players_from_list(data,0)
-					# cols = data.shift.to_i
-					# keys = data[0..cols-1]
-					# player = {}
-					# index = 0
-					# [].tap do |players|
-					# 	data[cols+1..-1].each do |value|
-					# 		player[keys[index]] = value
-					# 		index += 1
-					# 		if index == cols
-					# 			index = 0
-					# 			players << Frostbitten::Player.new(player)
-					# 		end
-					# 	end
-					# end
 				end
 			end
 
