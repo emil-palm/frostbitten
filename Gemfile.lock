@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/intridea/hashie.git
+  revision: f7adbf6b6e29bfcd3efbc33695fe0e018d62e66e
+  specs:
+    hashie (2.0.0.beta)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -18,7 +24,6 @@ GEM
     guard-rspec (2.4.0)
       guard (>= 1.1)
       rspec (~> 2.11)
-    hashie (1.2.0)
     i18n (0.6.1)
     jeweler (1.8.4)
       bundler (~> 1.0)
@@ -69,7 +74,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   guard-rspec
-  hashie
+  hashie!
   jeweler (~> 1.8.4)
   rake-compiler
   rb-fsevent

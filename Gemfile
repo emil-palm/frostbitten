@@ -1,4 +1,5 @@
 source "http://rubygems.org"
+gem 'hashie', :git => "git://github.com/intridea/hashie.git"
 # Add dependencies required to use your gem here.
 # Example:
 #   gem "activesupport", ">= 2.3.5"
@@ -17,4 +18,3 @@ group :development do
   gem 'rake-compiler'
 end
 
-gem 'hashie'

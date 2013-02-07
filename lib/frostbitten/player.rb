@@ -24,10 +24,10 @@ module Frostbitten
 
 		property :name
 		property :guid
-		property :team_id, :from => :teamId
-		property :squad_id, :from => :squadId
-		property :kills
-		property :deaths
-		property :score
+		property :team_id, :from => :teamId, :with => lambda { |v| v.to_i }
+		property :squad_id, :from => :squadId, :with => lambda { |v| v.to_i }
+		property :kills, :transform_with => lambda { |v| v.to_i }
+		property :deaths, :transform_with => lambda { |v| v.to_i }
+		property :score, :transform_with => lambda { |v| v.to_i }
 	end
 end
