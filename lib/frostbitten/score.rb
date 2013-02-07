@@ -6,7 +6,7 @@ module Frostbitten
 			def scores_from_list(list,index)
 				element_count = list.slice!(index).to_i
 				return [].tap do |scores| 
-					list.slice!(index+1,element_count).each_slice(2) do |slice|
+					list.slice!(index,element_count).each_slice(2) do |slice|
 						scores << Score.new(slice)
 					end
 				end

@@ -27,20 +27,21 @@ module Frostbitten
 			def players(list="all")
 				data = send(['listPlayers', list])
 				if data
-					cols = data.shift.to_i
-					keys = data[0..cols-1]
-					player = {}
-					index = 0
-					[].tap do |players|
-						data[cols+1..-1].each do |value|
-							player[keys[index]] = value
-							index += 1
-							if index == cols
-								index = 0
-								players << Frostbitten::Player.new(player)
-							end
-						end
-					end
+					return Player.players_from_list(data,0)
+					# cols = data.shift.to_i
+					# keys = data[0..cols-1]
+					# player = {}
+					# index = 0
+					# [].tap do |players|
+					# 	data[cols+1..-1].each do |value|
+					# 		player[keys[index]] = value
+					# 		index += 1
+					# 		if index == cols
+					# 			index = 0
+					# 			players << Frostbitten::Player.new(player)
+					# 		end
+					# 	end
+					# end
 				end
 			end
 
