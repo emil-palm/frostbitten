@@ -14,7 +14,6 @@ module Frostbitten
 				data = send("login.hashed")
 
 				salt = [data.first].pack("H*")
-				pp salt
 				hashed = Digest::MD5.hexdigest("#{salt}#{password}")
 				if send(["login.hashed", hashed.upcase])
 					@logged_in = true

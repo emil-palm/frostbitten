@@ -14,9 +14,8 @@ module Frostbitten
 			def reserved_slots_list(start_index=0)
 				return nil unless @logged_in
 				return [].tap do |players|
-						send(['reservedSlotsList.list', "#{start_index}"]).each do |player_name|
-							players << Player.new({:name => player_name})
-						end
+					send(['reservedSlotsList.list', "#{start_index}"]).each do |player_name|
+						players << Player.new({:name => player_name})
 					end
 				end
 			end
