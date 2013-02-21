@@ -30,4 +30,25 @@ module Frostbitten
 		property :deaths, :transform_with => lambda { |v| v.to_i }
 		property :score, :transform_with => lambda { |v| v.to_i }
 	end
+
+	class BannedPlayer < Hashie::Trash
+		class << self
+			def players_from_list(list,index)
+				list_count = list.slice!(index).to_i
+				return [].tap do |players|
+					list.slice!(index,list_count*5).each_slice(5) do |player_value|
+						p = {}
+						player_value.to_enum.with_index(1) { |val,index| p["data#{index}"] = val }
+						players << BannedPlayer.new(p)
+					end
+				end
+			end
+		end
+
+		property :type_id, :from => "data1"
+		property :player_id, :from => "data2"
+		property :type, :from => "data3"
+		property :time, :from => "data4"
+		property :reason, :from => "data5"
+	end
 end
