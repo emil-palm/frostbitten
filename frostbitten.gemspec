@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "frostbitten"
-  s.version = "0.0.1.pre1"
+  s.version = "0.1.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emil Palm"]
-  s.date = "2013-02-02"
+  s.date = "2013-02-22"
   s.description = "Gem that provides RCON commands for frostbite 2 engine games. BF3, BFBC2 and so on"
   s.email = "emil.palm@x86.nu"
   s.extensions = ["ext/frostbitten/extconf.rb"]
@@ -36,11 +36,19 @@ Gem::Specification.new do |s|
     "ext/frostbitten/message.c",
     "ext/frostbitten/message.h",
     "ext/frostbitten/native.c",
+    "ext/frostbitten/packet.c",
+    "ext/frostbitten/packet.h",
     "ext/frostbitten/word.c",
     "ext/frostbitten/word.h",
     "frostbitten.gemspec",
     "lib/frostbitten.rb",
     "lib/frostbitten/client.rb",
+    "lib/frostbitten/connection.rb",
+    "lib/frostbitten/map.rb",
+    "lib/frostbitten/methods/admin.rb",
+    "lib/frostbitten/methods/normal.rb",
+    "lib/frostbitten/player.rb",
+    "lib/frostbitten/score.rb",
     "lib/frostbitten/server.rb",
     "lib/frostbitten/version.rb",
     "spec/frostbitten_spec.rb",
@@ -60,6 +68,7 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<hashie>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
@@ -70,6 +79,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<terminal-notifier-guard>, [">= 0"])
       s.add_development_dependency(%q<rake-compiler>, [">= 0"])
     else
+      s.add_dependency(%q<hashie>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, [">= 0"])
@@ -81,6 +91,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rake-compiler>, [">= 0"])
     end
   else
+    s.add_dependency(%q<hashie>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, [">= 0"])

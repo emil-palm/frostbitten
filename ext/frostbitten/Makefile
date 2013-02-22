@@ -11,7 +11,7 @@ ECHO = $(ECHO1:0=@echo)
 
 #### Start of system configuration section. ####
 
-srcdir = src/
+srcdir = .
 topdir = /Users/emilpalm/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1
 hdrdir = /Users/emilpalm/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1
 arch_hdrdir = /Users/emilpalm/.rvm/rubies/ruby-1.9.3-p194/include/ruby-1.9.1/$(arch)
@@ -64,7 +64,7 @@ COUTFLAG = -o
 
 RUBY_EXTCONF_H = 
 cflags   =  $(optflags) $(debugflags) $(warnflags)
-optflags = -O0
+optflags = -O3
 debugflags = -g3
 warnflags = -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wshorten-64-to-32 -Wimplicit-function-declaration
 CFLAGS   = -fno-common $(cflags)  -fno-common -pipe $(ARCH_FLAG)
@@ -115,9 +115,9 @@ extout_prefix =
 target_prefix = /frostbitten
 LOCAL_LIBS = 
 LIBS = $(LIBRUBYARG_SHARED)  -lpthread -ldl -lobjc 
-SRCS = frostbitten.c header.c message.c word.c
-OBJS = frostbitten.o header.o message.o word.o
-TARGET = frostbitten
+SRCS = header.c message.c native.c packet.c word.c
+OBJS = header.o message.o native.o packet.o word.o
+TARGET = native
 DLLIB = $(TARGET).bundle
 EXTSTATIC = 
 STATIC_LIB = 
@@ -165,7 +165,7 @@ install-rb-default: pre-install-rb-default
 pre-install-rb: Makefile
 pre-install-rb-default: Makefile
 pre-install-rb-default:
-	$(ECHO) installing default frostbitten libraries
+	$(ECHO) installing default native libraries
 $(RUBYARCHDIR):
 	$(Q) $(MAKEDIRS) $@
 

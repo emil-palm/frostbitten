@@ -1,5 +1,5 @@
 #include "frostbitten.h"
-
+#include "packet.h"
 #ifndef header_h
 #define header_h
 
@@ -12,7 +12,7 @@ typedef struct _fb_header {
 } fb_header;
 
 void header_init();
-
+VALUE frostbitten_header_parse_from_buffer(VALUE self, fb_packet_buffer *buffer);
 VALUE frostbitten_header_get_sequence(VALUE self);
 VALUE frostbitten_header_set_sequence(VALUE self, VALUE seq);
 uint32_t frostbitten_header_package(fb_header *header);

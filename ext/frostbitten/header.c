@@ -3,6 +3,14 @@
 #include <ruby/io.h>
 VALUE c_frostbitten_header;
 
+
+VALUE frostbitten_header_parse_from_buffer(VALUE self, fb_packet_buffer *buffer) {
+	fb_header *header;
+	Data_Get_Struct(self, fb_header, header);
+    frostbitten_header_unpack(header, buffer->header);
+    return self;
+}
+
 VALUE frostbitten_header_get_sequence(VALUE self) {
 	fb_header *header;
 	Data_Get_Struct(self, fb_header, header);

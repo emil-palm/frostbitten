@@ -1,28 +1,10 @@
 #include "frostbitten.h"
 #include "message.h"
+
 VALUE c_frostbitten_message;
 
-
-VALUE frostbitten_message_read_from_io(VALUE self, VALUE io) {
-	fb_message *message;
-	Data_Get_Struct(self, fb_message, message);
-	message->header = rb_class_new_instance(0, NULL, c_frostbitten_header);
-	frostbitten_header_read_from_io(message->header, io);
-	
-
-	rb_io_t *fptr;
-	GetOpenFile(io, fptr);
-	rb_io_check_readable(fptr);
-	uint32_t packetSize, wordCount = 0;
-
-	FILE *fp = rb_io_stdio_file(fptr);
-
-	fread((void*)&packetSize, sizeof(uint32_t),1, fp);
-	fread((void*)&wordCount, sizeof(uint32_t),1, fp);
-
-	uint32_t bufferSize = packetSize-12; // Remove the byte size of header, packetSize and wordCount
-	
-	for(uint32_t i=0; i < wordCount; i++) {
+void frostbitten_read_words_from_file(fb_message *message, FILE *fp, fb_packet_buffer *buffer) {
+	for(uint32_t i=0; i < buffer->wordCount; i++) {
 		uint32_t wordByteLength = 0;
 		fread(&wordByteLength, sizeof(uint32_t), 1, fp);
 
@@ -30,9 +12,59 @@ VALUE frostbitten_message_read_from_io(VALUE self, VALUE io) {
 		fread(word, sizeof(char), wordByteLength+1, fp);
 		rb_ary_push(message->words, rb_str_new2(word));
 	}
-    
+}
+
+VALUE frostbitten_message_read_from_io(VALUE self, VALUE io) {
+	fb_message *message;
+	Data_Get_Struct(self, fb_message, message);
+
+	rb_io_t *fptr;
+	GetOpenFile(io, fptr);
+	rb_io_check_readable(fptr);
+	FILE *fp = rb_io_stdio_file(fptr);
+	fb_packet_buffer *buffer = read_buffer_from_io(fp);
+	
+	if ( !message->header ) {
+		message->header = rb_class_new_instance(0, NULL, c_frostbitten_header);
+		frostbitten_header_parse_from_buffer(message->header, buffer);
+	}
+   	
+   	frostbitten_read_words_from_file(message, fp, buffer);
     return self;
 }
+
+VALUE frostbitten_message_cls_read_from_io(VALUE self, VALUE io) {
+	VALUE msg = rb_obj_alloc(c_frostbitten_message);
+    rb_obj_call_init(msg, 0, 0);
+    return frostbitten_message_read_from_io(msg, io);
+}
+
+VALUE frostbitten_message_complete(VALUE self, VALUE io) {
+	rb_io_t *fptr;
+	GetOpenFile(io, fptr);
+	rb_io_check_readable(fptr);
+	FILE *fp = rb_io_stdio_file(fptr);
+
+	fb_packet_buffer *buffer = read_buffer_from_io(fp);
+	if (is_packet_valid(buffer)) {
+		VALUE msg = rb_obj_alloc(c_frostbitten_message);
+    	rb_obj_call_init(msg, 0, 0);
+    	fb_message *message;
+		Data_Get_Struct(msg, fb_message, message);
+    	frostbitten_read_words_from_file(message, fp, buffer);
+
+		if (rb_block_given_p()) {
+			return rb_yield(msg);
+		} else {
+			return msg;
+		}
+	}
+	free(buffer);
+	return Qnil;
+}
+
+
+
 
 VALUE frostbitten_message_write_to_io(VALUE self, VALUE io) {
 	fb_message *message;
@@ -165,5 +197,6 @@ void message_init() {
 
 	rb_define_method(c_frostbitten_message, "header", frostbitten_message_get_header, 0);
 	rb_define_method(c_frostbitten_message, "header=", frostbitten_message_set_header, 1);
-
+	rb_define_singleton_method(c_frostbitten_message, "read", frostbitten_message_cls_read_from_io, 1);
+	rb_define_singleton_method(c_frostbitten_message, "locate_packet", frostbitten_message_complete, 1);
 }
